@@ -25,10 +25,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/auth", authRouter);
-app.use("/users", usersRouter);
-app.use("/blog", blogRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/blog", blogRouter);
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static("client/build"));

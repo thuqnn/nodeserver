@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 /* GET home page. */
-router.get("/abc", async function (req, res, next) {
+router.get("/", async function (req, res) {
   return res.json({ test: "test" });
 });
 
