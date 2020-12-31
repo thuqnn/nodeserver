@@ -56,7 +56,7 @@ router.post("/create", auth, (req, res) => {
 
 //GET
 router.get("/userposts", auth, async (req, res) => {
-  Blog.find({ postedBy: req.user._id })
+  Blog.find({ postedBy: req.user.id })
     .populate("postedBy", "_id name")
     .then((userposts) => {
       res.json(userposts);
@@ -67,7 +67,7 @@ router.get("/userposts", auth, async (req, res) => {
 });
 
 //PUT
-router.put("/like", auth, (req, res) => {
+router.put("/like/:postId", auth, (req, res) => {
   Blog.findByIdAndUpdate(
     req.body.postId,
     {
@@ -84,11 +84,11 @@ router.put("/like", auth, (req, res) => {
     }
   });
 });
-router.put("/unlike", auth, (req, res) => {
+router.put("/unlike/:postId", auth, (req, res) => {
   Blog.findByIdAndUpdate(
     req.body.postId,
     {
-      $pull: { likes: req.user.id },
+      $pullAll: { likes: req.user.id },
     },
     {
       new: true,
@@ -105,7 +105,7 @@ router.put("/unlike", auth, (req, res) => {
 router.put("/comment", auth, (req, res) => {
   const comment = {
     text: req.body.text,
-    postedBy: req.user._id,
+    postedBy: req.user.id,
   };
   Blog.findByIdAndUpdate(
     req.body.postId,
