@@ -8,6 +8,7 @@ router.get("/", auth, (req, res) => {
   Blog.find()
     .populate("postedBy", "_id name")
     .populate("comments.postedBy", "_id name")
+    .sort("-createdAt")
     .then((posts) => {
       res.json(posts);
     })
@@ -21,6 +22,7 @@ router.get("/getsubpost", auth, (req, res) => {
   Blog.find({ postedBy: { $in: req.user.following } })
     .populate("postedBy", "_id name")
     .populate("comments.postedBy", "_id name")
+    .sort("-createdAt")
     .then((posts) => {
       res.json(posts);
     })
